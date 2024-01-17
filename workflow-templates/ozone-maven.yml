@@ -1,0 +1,56 @@
+name: Ozone Maven CI
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: validate build
+        uses: ozone-his/.github/workflows/maven.yml@main
+        secrets: inherit
+
+  # this job is only needed for pre-releases (snapshots)
+  pre-release:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: publish artifacts
+        uses: ozone-his/.github/workflows/publish.yml@main
+        with:
+          server-id: mks-nexus-public-snapshots # mks-nexus-private-snapshots for private snapshots
+          maven-args: -DskipTests
+        secrets: inherit
+
+  # this job is only needed for releases (non-snapshots)
+  release:
+    if: ${{ github.event_name == 'release' }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: publish artifacts
+        uses: ozone-his/.github/workflows/publish.yml@main
+        with:
+          server-id: mks-nexus-public-releases
+          maven-args: -DskipTests
+        secrets: inherit
+
+  # this job notifies OCD3 of a new pre-release(snapshots)
+  notify-ocd3:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: pre-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: notify OCD3
+        uses: ozone-his/.github/workflows/notify-ocd3.yml@main
+        with:
+          notify-ocd3: true
+          webhook-url: ${{ secrets.OCD3_WEBHOOK_URL }}
+        secrets: inherit

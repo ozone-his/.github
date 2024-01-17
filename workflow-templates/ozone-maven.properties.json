@@ -1,0 +1,12 @@
+{
+    "name": "Ozone Maven Workflow",
+    "description": "Ozone Maven CI starter workflow.",
+    "iconName": "ozone-icon",
+    "categories": [
+        "Java", "Maven", "Ozone"
+    ],
+    "filePatterns": [
+        "pom.xml$",
+        ".*\\.java$"
+    ]
+}
