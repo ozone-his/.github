@@ -16,6 +16,7 @@ on:
       maven-args:
         description: 'Additional arguments to pass to maven'
         required: false
+        type: string
         default: ''
     secrets:
       NEXUS_USERNAME:

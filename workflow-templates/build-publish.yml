@@ -10,45 +10,40 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: validate build
-        uses: ozone-his/.github/workflows/maven.yml@main
-        secrets: inherit
+    uses: ozone-his/.github/.github/workflows/maven.yml@main
+    with:
+      java-version: 17
+      java-distribution: temurin
+    secrets: inherit
 
-  # this job is only needed for pre-releases (snapshots)
+  # this job publishes snapshots on every push to main
   pre-release:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: publish artifacts
-        uses: ozone-his/.github/workflows/publish.yml@main
-        with:
-          maven-args: -DskipTests
-        secrets: inherit
+    uses: ozone-his/.github/.github/workflows/publish.yml@main
+    with:
+      java-version: 17
+      java-distribution: temurin
+      maven-args: -DskipTests
+    secrets: inherit
 
-  # this job is only needed for releases (non-snapshots)
+  # this job publishes releases on every tag
   release:
     if: ${{ github.event_name == 'release' }}
     needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: publish artifacts
-        uses: ozone-his/.github/workflows/publish.yml@main
-        with:
-          maven-args: -DskipTests
-        secrets: inherit
+    uses: ozone-his/.github/.github/workflows/publish.yml@main
+    with:
+      java-version: 17
+      java-distribution: temurin
+      maven-args: -DskipTests
+    secrets: inherit
 
   # this job notifies OCD3 of a new pre-release(snapshots)
   notify-ocd3:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: pre-release
-    runs-on: ubuntu-latest
-    steps:
-      - name: notify OCD3
-        uses: ozone-his/.github/workflows/notify-ocd3.yml@main
-        with:
-          notify-ocd3: true
-          webhook-url: ${{ secrets.OCD3_WEBHOOK_URL }}
-        secrets: inherit
+    uses: ozone-his/.github/.github/workflows/notify-ocd3.yml@main
+    with:
+      notify-ocd3: true
+      webhook-url: ${{ secrets.OCD3_WEBHOOK_URL }}
+    secrets: inherit
