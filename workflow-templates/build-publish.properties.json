@@ -1,0 +1,12 @@
+{
+    "name": "Build and Publish Maven Project",
+    "description": "Build and validate Maven project, and publish it to Mekom Nexus Repository. Optionally, notify OCD3 Instance.",
+    "iconName": "ozone-icon",
+    "categories": [
+        "Java", "Maven", "Ozone"
+    ],
+    "filePatterns": [
+        "pom.xml$",
+        ".*\\.java$"
+    ]
+}
