@@ -1,4 +1,4 @@
-name: Ozone Maven CI
+name: Build and Publish with Maven CI
 
 on:
   push:
@@ -25,7 +25,6 @@ jobs:
       - name: publish artifacts
         uses: ozone-his/.github/workflows/publish.yml@main
         with:
-          server-id: mks-nexus-public-snapshots # mks-nexus-private-snapshots for private snapshots
           maven-args: -DskipTests
         secrets: inherit
 
@@ -38,7 +37,6 @@ jobs:
       - name: publish artifacts
         uses: ozone-his/.github/workflows/publish.yml@main
         with:
-          server-id: mks-nexus-public-releases
           maven-args: -DskipTests
         secrets: inherit
 
