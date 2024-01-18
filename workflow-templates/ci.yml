@@ -1,4 +1,4 @@
-name: Build and Publish with Maven CI
+name: Maven CI
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
     types: [published]
 
 jobs:
-  build:
+  validate:
     uses: ozone-his/.github/.github/workflows/maven.yml@main
     with:
       java-version: 17
@@ -19,7 +19,7 @@ jobs:
   # this job publishes snapshots on every push to main
   pre-release:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-    needs: build
+    needs: validate
     uses: ozone-his/.github/.github/workflows/publish.yml@main
     with:
       java-version: 17
@@ -30,7 +30,7 @@ jobs:
   # this job publishes releases on every tag
   release:
     if: ${{ github.event_name == 'release' }}
-    needs: build
+    needs: validate
     uses: ozone-his/.github/.github/workflows/publish.yml@main
     with:
       java-version: 17
@@ -45,5 +45,5 @@ jobs:
     uses: ozone-his/.github/.github/workflows/notify-ocd3.yml@main
     with:
       notify-ocd3: true
-      webhook-url: ${{ secrets.OCD3_WEBHOOK_URL }}
+      webhook-url: https://openmrs-cd.mekomsolutions.net/generic-webhook-trigger/invoke
     secrets: inherit

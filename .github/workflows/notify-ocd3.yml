@@ -28,9 +28,9 @@ jobs:
       - name: Notify OCD3
         if: ${{ inputs.notify-ocd3 }}
         uses: distributhor/workflow-webhook@v3
-        env:
+        with:
           webhook_type: 'json-extended'
           webhook_url: ${{ inputs.webhook-url }}
           webhook_auth: ${{ secrets.OCD3_USERNAME }}:${{ secrets.OCD3_PASSWORD }}
-          data: "{ \"ref\": \"${{ github.event_name == 'schedule' && github.default_branch || github.ref }}\" }"
+          data: '{ "ref": "${{ github.ref }}", "repository": "${{ github.repository }}", "sha": "${{ github.sha }}", "actor": "${{ github.actor }}", "event_name": "${{ github.event_name }}" }'
           verbose: true
