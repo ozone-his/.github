@@ -16,6 +16,13 @@ jobs:
       java-distribution: temurin
     secrets: inherit
 
+  spotless:
+    needs: validate
+    uses: ozone-his/.github/.github/workflows/check-spotless.yml@main
+    with:
+      java-version: 17
+      java-distribution: temurin
+
   # this job publishes snapshots on every push to main
   pre-release:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
