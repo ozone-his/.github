@@ -10,7 +10,7 @@ on:
 
 jobs:
   validate:
-    uses: ozone-his/.github/.github/workflows/maven.yml@main
+    uses: mekomsolutions/shared-github-workflow/.github/workflows/maven/build-test.yml@main
     with:
       java-version: 17
       java-distribution: temurin
@@ -18,7 +18,7 @@ jobs:
 
   spotless:
     needs: validate
-    uses: ozone-his/.github/.github/workflows/check-spotless.yml@main
+    uses: mekomsolutions/shared-github-workflow/.github/workflows/maven/spotless-check.yml@main
     with:
       java-version: 17
       java-distribution: temurin
@@ -27,7 +27,7 @@ jobs:
   pre-release:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: validate
-    uses: ozone-his/.github/.github/workflows/publish.yml@main
+    uses: mekomsolutions/shared-github-workflow/.github/workflows/maven/publish.yml@main
     with:
       java-version: 17
       java-distribution: temurin
@@ -38,7 +38,7 @@ jobs:
   release:
     if: ${{ github.event_name == 'release' }}
     needs: validate
-    uses: ozone-his/.github/.github/workflows/publish.yml@main
+    uses: mekomsolutions/shared-github-workflow/.github/workflows/maven/publish.yml@main
     with:
       java-version: 17
       java-distribution: temurin
@@ -49,7 +49,7 @@ jobs:
   notify-ocd3:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: pre-release
-    uses: ozone-his/.github/.github/workflows/notify-ocd3.yml@main
+    uses: mekomsolutions/shared-github-workflow/.github/workflows/ocd3/notify.yml@main
     with:
       notify-ocd3: true
       webhook-url: https://openmrs-cd.mekomsolutions.net/generic-webhook-trigger/invoke
