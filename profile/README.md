@@ -1,8 +1,8 @@
 <p align="center">
-    <a href="https://docs.ozone-his.com/"><img src="https://github.com/ozone-his/.github/blob/main/profile/ozone-logo.png" alt="Ozone" width="30%"/></a>
+    <a href="https://docs.ozone-his.com/"><img src="https://raw.githubusercontent.com/ozone-his/.github/refs/heads/main/profile/ozone-logo.png" alt="Ozone" width="30%"/></a>
 </p>
 
-<h3 align="center">Health Information System</h3>
+<h3 align="center">The Instant HIS</h3>
 
 <p align="center">
     Welcome to Ozone's open-source repositories!
